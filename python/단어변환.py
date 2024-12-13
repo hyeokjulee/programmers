@@ -1,26 +1,22 @@
-import copy
+from collections import deque
 
 def solution(begin, target, words):
-    length_of_word = len(begin)
-    depthSet = set()
+    q = deque()
+    q.append([begin, 0])
+    used = set()
     
-    def dfs(be, wo, depth):
-        if be == target:
-            depthSet.add(depth)
+    while q:
+        this_word = q.popleft()
+        if this_word[0] == target:
+            return this_word[1]
         else:
-            for w in wo:
-                eql = 0
-                for i in range(length_of_word):
-                    if be[i] == w[i]:
-                        eql += 1
-                if eql == length_of_word - 1:
-                    li = copy.deepcopy(wo)
-                    li.remove(w)
-                    dfs(w, li, depth + 1)
-                    
-    dfs(begin, words, 0)
+            for word in words:
+                differ = 0
+                for i in range(len(word)):
+                    if this_word[0][i] != word[i]:
+                        differ += 1
+                if differ == 1 and word not in used:
+                    q.append([word, this_word[1] + 1])
+                    used.add(word)
     
-    if depthSet:
-        return min(depthSet)
-    else:
-        return 0
+    return 0
