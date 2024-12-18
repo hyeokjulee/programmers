@@ -1,14 +1,13 @@
+import heapq
+
 def solution(n, works):
-    works.sort(reverse = True)
+    if sum(works) <= n:
+        return 0
     
-    for top_work in range(works[0], 0, -1):
-        for idx in range(len(works)):
-            if n == 0 or works[idx] != top_work:
-                break
-            elif works[len(works) - 1] == 0:
-                return 0
-            else:
-                n -= 1
-                works[idx] -= 1
+    works = [-w for w in works]
+    heapq.heapify(works)
+    
+    for _ in range(n):
+        heapq.heappush(works, heapq.heappop(works) + 1)
     
     return sum([w**2 for w in works])
