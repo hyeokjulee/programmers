@@ -1,17 +1,13 @@
+import re
+
 def solution(user_id, banned_id):
     tmp = [[] for _ in range(len(banned_id))]
     
     for bi_idx in range(len(banned_id)):
-        bi = banned_id[bi_idx]
+        bi = banned_id[bi_idx].replace('*', '.')
         for ui in user_id:
-            if len(bi) == len(ui):
-                flag = True
-                for word_idx in range(len(bi)):
-                    if bi[word_idx] != '*' and bi[word_idx] != ui[word_idx]:
-                        flag = False
-                        break
-                if flag:
-                    tmp[bi_idx].append(ui)
+            if len(bi) == len(ui) and re.match(bi, ui):
+                tmp[bi_idx].append(ui)
             
     answer = []
     q = [[0, set()]]
