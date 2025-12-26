@@ -1,25 +1,21 @@
-import copy
-
-end = False
+from collections import defaultdict
 
 def solution(tickets):
     answer = []
-    tickets.sort(key=lambda x: (x[0], x[1]))
     
-    def dfs(tic, fro, ans, rem):
-        global end
-        if rem == 0:
-            end = True
-            answer.append(ans)
-        elif not end:
-            for ti in tic:
-                if ti[0] == fro:
-                    answ = copy.deepcopy(ans)
-                    answ.append(ti[1])
-                    tick = copy.deepcopy(tic)
-                    tick.remove(ti)
-                    dfs(tick, ti[1], answ, rem - 1)
+    ticketMap = defaultdict(list)
+    for a, b in tickets:
+        ticketMap[a].append(b)
+    for value in ticketMap.values():
+        value.sort(reverse = True)
         
-    dfs(tickets, 'ICN', ['ICN'], len(tickets))
-    
-    return answer[0]
+    stack = ['ICN']
+    while stack:
+        value = ticketMap[stack[-1]]
+        if value:
+            stack.append(value.pop())
+        else:
+            answer.append(stack.pop())
+
+    answer.reverse()
+    return answer
