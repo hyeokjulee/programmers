@@ -1,28 +1,12 @@
-def solution(s):
-    answer = 1
+def solution(s):    
+    def get_length(l, r):
+        while 0 <= l and r < len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+        return r - l - 1
     
-    for i in range(len(s)):
-        length = 1
-        left, right = i - 1, i + 1
-        while left >= 0 and right <= len(s) - 1:
-            if s[left] == s[right]:
-                length += 2
-                left -= 1
-                right += 1
-            else:
-                break
-        answer = max(answer, length)
-        
-    for i in range(len(s)):
-        length = 0
-        left, right = i, i + 1
-        while left >= 0 and right <= len(s) - 1:
-            if s[left] == s[right]:
-                length += 2
-                left -= 1
-                right += 1
-            else:
-                break
-        answer = max(answer, length)
+    answer = 1
+    for c in range(len(s) - 1):
+        answer = max(answer, get_length(c, c), get_length(c, c + 1))
 
     return answer
