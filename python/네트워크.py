@@ -1,24 +1,19 @@
 def solution(n, computers):
-    graph = []
+    answer = 0
     visited = [False] * n
-    cnt = 0
     
-    for i in range(n):
-        connected = []
-        for j in range(n):
-            if computers[i][j] == 1:
-                connected.append(j)
-        graph.append(connected)
-        
-    def dfs(com):
-        visited[com] = True
-        for c in graph[com]:
-            if not visited[c]:
-                dfs(c)
-            
     for i in range(n):
         if not visited[i]:
-            cnt += 1
-            dfs(i)
+            answer += 1
+            visited[i] = True
+            stack = [i]
+            
+            while stack:
+                current = stack.pop()
+                
+                for j in range(n):
+                    if not visited[j] and computers[current][j] == 1:
+                        visited[j] = True
+                        stack.append(j)
     
-    return cnt
+    return answer
